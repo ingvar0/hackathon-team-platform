@@ -38,6 +38,7 @@ async def user_profile(
             telegram_id=user.telegram_id,
             fullname=user.fullname or "",
             description=user.description or "",
+            role=user.role,
             pic=base64.b64encode(load_avatar(user.telegram_id)).decode(),
             tags=user.tags or [],
         )
@@ -58,6 +59,7 @@ async def user_profile(
         telegram_id=user.telegram_id,
         fullname=user.fullname or "",
         description=user.description or "",
+        role=user.role,
         pic=base64.b64encode(load_avatar(user.telegram_id)).decode(),
         tags=user.tags or [],
     )
@@ -94,6 +96,7 @@ async def update_user_profile(
         telegram_id=user.telegram_id,
         fullname=user.fullname or "",
         description=user.description or "",
+        role=user.role,
         pic=base64.b64encode(load_avatar(user.telegram_id)).decode(),
         tags=user.tags or [],
     )

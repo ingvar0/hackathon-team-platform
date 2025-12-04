@@ -90,9 +90,6 @@ async def echo_handler(message: Message) -> None:
         await message.answer("Nice try!")
 
 async def main() -> None:
-    await create_all_tables()
-
-
     await dp.start_polling(bot)
 
 

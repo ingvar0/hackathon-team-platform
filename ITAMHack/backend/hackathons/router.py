@@ -2,9 +2,11 @@ from pathlib import Path
 import base64
 
 
-from fastapi import APIRouter, Depends, HTTPException, Response
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
+from backend.depends import get_current_admin
 
+from backend.admin.models import Admin
 from backend.database import get_db
 from backend.hackathons.schemas import HackInfo, UpdateHackInfo, CreateHack
 from backend.hackathons.service import update_hack, create_hack, all_hacks, get_hack_by_id, delete_hack
@@ -68,6 +70,7 @@ async def update_hack_info(
     hack_id: int,
     data: UpdateHackInfo,
     session: AsyncSession = Depends(get_db),
+    admin: Admin = Depends(get_current_admin)
 ) -> HackInfo:
     hack = await get_hack_by_id(session=session, hack_id=hack_id)
 
@@ -96,6 +99,7 @@ async def update_hack_info(
 async def delete_hack_info(
     hack_id: int,
     session: AsyncSession = Depends(get_db),
+    admin: Admin = Depends(get_current_admin)
 ) -> str:
     hack = await get_hack_by_id(session=session, hack_id=hack_id)
 
@@ -112,6 +116,7 @@ async def delete_hack_info(
 async def create_hack_endpoint(
         data: CreateHack,
         session: AsyncSession = Depends(get_db),
+        admin: Admin = Depends(get_current_admin)
 ) -> HackInfo:
     hack = await create_hack(session=session,
                              title=data.title,

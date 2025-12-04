@@ -1,4 +1,4 @@
-from certifi import where
+
 
 from backend.hackathons.models import Hackathon
 from sqlalchemy.ext.asyncio import AsyncSession
