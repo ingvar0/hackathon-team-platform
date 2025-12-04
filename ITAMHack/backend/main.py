@@ -1,20 +1,24 @@
-import asyncio
-
-import uvicorn
 from fastapi import FastAPI, HTTPException, Response
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
+from backend.database import create_all_tables
 from backend.config import settings
 from backend.redis.redis_client import redis_client
 from backend.profile.router import router as profile_router
+from backend.hackathons.router import router as hackathons_router
+from backend.admin.router import router as admin_router
+
 
 import jwt
 import time
 
 app = FastAPI()
 
+app.include_router(admin_router)
 app.include_router(profile_router)
+app.include_router(hackathons_router)
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -29,6 +33,11 @@ SECRET = settings.secret_key
 
 class CodeInput(BaseModel):
     code: str
+
+@app.on_event("startup")
+async def on_startup():
+    await create_all_tables()
+
 
 
 @app.post("/login-by-code")

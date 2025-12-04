@@ -11,5 +11,6 @@ class User(Base):
     username = Column(String(255), nullable=True)
     fullname = Column(String(255), nullable=True)
     description = Column(String(2000), nullable=True)
+    role = Column(String(63), nullable=True)
     tags = Column(JSON, nullable=True)
     date_registration = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)

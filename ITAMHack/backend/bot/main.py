@@ -31,6 +31,14 @@ TOKEN = settings.bot_token
 bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 dp = Dispatcher()
 
+from aiogram.exceptions import TelegramForbiddenError
+
+async def echo_handler(message: types.Message):
+    try:
+        await message.send_copy(chat_id=message.chat.id)
+    except TelegramForbiddenError:
+        print(f"User {message.chat.id} blocked the bot.")
+
 
 @dp.message(CommandStart())
 async def command_start_handler(message: Message) -> None:
@@ -82,9 +90,6 @@ async def echo_handler(message: Message) -> None:
         await message.answer("Nice try!")
 
 async def main() -> None:
-    await create_all_tables()
-
-
     await dp.start_polling(bot)
 
 
