@@ -3,7 +3,7 @@ services:
     restart: always
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: ./backend/Dockerfile
     env_file: .env
     environment:
       DATABASE_URL: postgresql+asyncpg://${DB_USER:-freak}:${DB_PASSWORD:-freak}@postgres:5432/${DB_NAME:-freak}
@@ -15,16 +15,14 @@ services:
       redis:
         condition: service_started
     volumes:
-      - ./backend/data:/app/backend/data
-      - ./alembic:/app/alembic
-      - ./frontend:/app/frontend
-    command: uvicorn backend.main:app --host 0.0.0.0 --port 8000
+      - ./backend/api/data:/app/backend/api/data
+    command: uvicorn backend.api.main:app --host 0.0.0.0 --port 8000
 
   bot:
     restart: always
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: ./backend/Dockerfile
     env_file: .env
     environment:
       DATABASE_URL: postgresql+asyncpg://${DB_USER:-freak}:${DB_PASSWORD:-freak}@postgres:5432/${DB_NAME:-freak}
@@ -34,8 +32,8 @@ services:
       redis:
         condition: service_started
     volumes:
-      - ./backend/data:/app/backend/data
-    command: python -m backend.bot.main
+      - ./backend/api/data:/app/backend/api/data
+    command: python -m backend.api.bot.main
   postgres:
     image: postgres:17.0
     restart: always
@@ -68,6 +66,24 @@ services:
       interval: 5s
       timeout: 3s
       retries: 5
+
+  # Frontend временно отключен (еще не настроен)
+  # frontend:
+  #   restart: always
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile  # Use Dockerfile.dev for development mode
+  #   ports:
+  #     - "3000:80"
+  #   depends_on:
+  #     - backend
+  #   environment:
+  #     - VITE_API_URL=http://localhost:8000
+  #   # For development mode: change dockerfile to Dockerfile.dev and uncomment volumes below
+  #   # dockerfile: Dockerfile.dev
+  #   # volumes:
+  #   #   - ./frontend:/app
+  #   #   - /app/node_modules
 
 
 volumes:
