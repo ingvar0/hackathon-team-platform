@@ -13,7 +13,7 @@ from backend.api.admin.router import router as admin_router
 import jwt
 import time
 
-app = FastAPI(title="ITAMHack API", version="1.0.0")
+app = FastAPI(title="ITAMHack API", prefix="/api")
 
 app.include_router(admin_router)
 app.include_router(profile_router)
