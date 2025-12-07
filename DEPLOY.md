@@ -326,14 +326,26 @@ docker compose -f docker-compose.prod.yaml restart backend
 
 ### 7.3 Обновление приложения
 
+**Простой способ (если изменения только в коде, без новых зависимостей):**
+
+```bash
+# Получаем последние изменения
+git pull
+
+# Перезапускаем контейнеры (пересобирает только при необходимости)
+docker compose -f docker-compose.prod.yaml up -d --build
+```
+
+**Полный способ (рекомендуется при изменении зависимостей или Dockerfile):**
+
 ```bash
 # Останавливаем контейнеры
 docker compose -f docker-compose.prod.yaml down
 
-# Получаем последние изменения (если используете Git)
+# Получаем последние изменения
 git pull
 
-# Пересобираем образы
+# Пересобираем образы с нуля
 docker compose -f docker-compose.prod.yaml build --no-cache
 
 # Запускаем заново
@@ -463,6 +475,67 @@ sudo chmod 666 /var/run/docker.sock
 ```
 
 **Важно:** После добавления в группу docker обязательно перезайдите в систему или выполните `newgrp docker`, иначе изменения не вступят в силу.
+
+### Проблема: Бот не может подключиться к Redis
+
+Если вы видите ошибку:
+```
+ConnectionError: Error -3 connecting to redis:6379
+```
+
+**Решение:**
+
+```bash
+# 1. Проверьте статус Redis
+docker compose -f docker-compose.prod.yaml ps redis
+
+# 2. Проверьте логи Redis
+docker compose -f docker-compose.prod.yaml logs redis
+
+# 3. Проверьте, может ли бот разрешить имя redis
+docker compose -f docker-compose.prod.yaml exec bot ping -c 3 redis
+
+# 4. Проверьте настройки в .env файле
+# Убедитесь, что REDIS_HOST=redis (имя сервиса в docker-compose)
+
+# 5. Перезапустите Redis
+docker compose -f docker-compose.prod.yaml restart redis
+
+# 6. Перезапустите бота
+docker compose -f docker-compose.prod.yaml restart bot
+
+# 7. Проверьте логи бота
+docker compose -f docker-compose.prod.yaml logs -f bot
+```
+
+### Проблема: Конфликт бота (несколько экземпляров)
+
+Если вы видите ошибку:
+```
+TelegramConflictError: terminated by other getUpdates request; make sure that only one bot instance is running
+```
+
+**Решение:**
+
+```bash
+# 1. Остановите все контейнеры бота
+docker compose -f docker-compose.prod.yaml stop bot
+
+# 2. Проверьте, нет ли других запущенных контейнеров бота
+docker ps | grep bot
+
+# 3. Остановите все найденные контейнеры бота
+docker stop $(docker ps -q -f name=bot)
+
+# 4. Удалите все контейнеры бота (если нужно)
+docker rm $(docker ps -aq -f name=bot)
+
+# 5. Запустите бота заново
+docker compose -f docker-compose.prod.yaml up -d bot
+
+# 6. Проверьте, что запущен только один экземпляр
+docker compose -f docker-compose.prod.yaml ps bot
+```
 
 ## Безопасность
 

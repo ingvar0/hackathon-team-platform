@@ -36,7 +36,7 @@ services:
       postgres:
         condition: service_healthy
       redis:
-        condition: service_started
+        condition: service_healthy
     volumes:
       - ./backend/api/data:/app/backend/api/data
     command: python -m backend.api.bot.main
@@ -70,7 +70,7 @@ services:
     command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-}
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ["CMD-SHELL", "redis-cli -a ${REDIS_PASSWORD:-} ping || exit 1"]
       interval: 10s
       timeout: 3s
       retries: 5
