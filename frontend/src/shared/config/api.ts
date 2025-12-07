@@ -4,8 +4,7 @@
 
 import axios from 'axios'
 
-// Определяем режим: в продакшене import.meta.env.PROD = true, в разработке import.meta.env.DEV = true
-const isDevelopment = import.meta.env.DEV
+// Определяем режим: в продакшене import.meta.env.PROD = true
 const isProduction = import.meta.env.PROD
 
 // Базовый URL для API запросов
