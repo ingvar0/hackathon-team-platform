@@ -7,7 +7,6 @@ import logo from '../../../shared/assets/logo.svg'
 import { AuthBlock } from '../../AuthBlock'
 import { useState } from 'react'
 import { useUser } from '../../../app/providers/UserProvider'
-import { useAdmin } from '../../../app/providers/AdminProvider'
 
 export const Header = () => {
   const [isOpen, setIsOpen] = useState(false)

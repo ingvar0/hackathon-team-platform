@@ -82,7 +82,7 @@ export const AdminPanel = () => {
       <div className={styles.adminPanel}>
         <div className={styles.adminPanel__login}>
           <AdminLoginForm closeAuth={() => {
-            setShowLogin(false)
+            // После успешного входа форма закроется автоматически
           }} />
         </div>
       </div>
