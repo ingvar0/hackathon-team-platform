@@ -14,7 +14,6 @@ async def admin_login(
     response: Response,
     session: AsyncSession = Depends(get_db),
 ):
-    # Normalize email: trim and convert to lowercase
     normalized_email = data.email.strip().lower()
     
     admin = await get_admin(session=session, email=normalized_email)

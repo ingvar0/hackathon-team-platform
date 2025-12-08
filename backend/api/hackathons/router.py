@@ -2,6 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from backend.api.depends import get_current_admin
 
+from backend.api.teams.schemas import TeamInfo
+from backend.api.teams.service import get_teams_by_hackathon
+from backend.api.teams.utils import build_team_info
 from backend.api.hackathons.utils import get_pic_base64
 from backend.api.admin.models import Admin
 from backend.api.database import get_db
@@ -179,6 +182,37 @@ async def create_hack_endpoint(
         raise HTTPException(status_code=500, detail=f"Error creating hack: {str(e)}")
 
 
+@router.post("/{hack_id}/statistics", response_model=list[TeamInfo])
+async def get_hack_statistics(
+    hack_id: int,
+    session: AsyncSession = Depends(get_db),
+    admin: Admin = Depends(get_current_admin)
+) -> list[TeamInfo]:
+    """Получить список всех команд, участвующих в хакатоне (для экспорта в CSV)"""
+    # Проверяем существование хакатона
+    hack = await get_hack_by_id(session=session, hack_id=hack_id)
+    if not hack:
+        raise HTTPException(status_code=404, detail="Hack not found")
+    
+    # Получаем все команды для этого хакатона
+    teams = await get_teams_by_hackathon(session=session, hackathon_id=hack_id)
+    
+    # Формируем полную информацию о каждой команде
+    teams_info = []
+    for team in teams:
+        if team:
+            try:
+                team_info = await build_team_info(
+                    session=session,
+                    team=team,
+                    include_password=False
+                )
+                teams_info.append(team_info)
+            except Exception as e:
+                # Пропускаем команды с ошибками (например, если капитан не найден)
+                continue
+    
+    return teams_info
 #-----------------------------------------------------------------------------------------------------------------------------------------
 
 
