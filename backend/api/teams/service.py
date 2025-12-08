@@ -1,6 +1,7 @@
 from backend.api.teams.models import Team
+from backend.api.teams.invitation_models import TeamInvitation
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, and_
+from sqlalchemy import select, and_, delete
 
 
 async def get_team_by_id(session: AsyncSession, team_id: int) -> Team | None:
@@ -67,6 +68,15 @@ async def update_team(session: AsyncSession, team: Team, title: str, description
     return team
 
 async def delete_team(session: AsyncSession, team: Team, commit: bool = True) -> None:
+    team_id = team.team_id
+    # Сначала удаляем все приглашения команды
+    await session.execute(
+        delete(TeamInvitation).where(TeamInvitation.team_id == team_id)
+    )
+    # Применяем изменения, чтобы избежать нарушения внешнего ключа
+    await session.flush()
+    
+    # Теперь удаляем саму команду
     await session.delete(team)
     if commit:
         await session.commit()
