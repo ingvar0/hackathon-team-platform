@@ -451,41 +451,45 @@ async def delete_team_info(
     if not team:
         raise HTTPException(status_code=404, detail="Team not found")
     
-    participants_list = team.participants_id or []
-    hackathon_id = team.hackathon_id
-    
-    await cancel_invitations_for_team(session=session, team_id=team_id, commit=False)
-    
-    for participant_id in participants_list:
+    try:
+        participants_list = team.participants_id or []
+        hackathon_id = team.hackathon_id
+        
+        await cancel_invitations_for_team(session=session, team_id=team_id, commit=False)
+        
+        for participant_id in participants_list:
+            await update_user_team_for_hackathon(
+                session=session,
+                telegram_id=participant_id,
+                hackathon_id=hackathon_id,
+                team_id=None,
+                commit=False,
+                update_count=False
+            )
         await update_user_team_for_hackathon(
             session=session,
-            telegram_id=participant_id,
+            telegram_id=team.captain_id,
             hackathon_id=hackathon_id,
             team_id=None,
             commit=False,
             update_count=False
         )
-    await update_user_team_for_hackathon(
-        session=session,
-        telegram_id=team.captain_id,
-        hackathon_id=hackathon_id,
-        team_id=None,
-        commit=False,
-        update_count=False
-    )
-    await delete_team(session=session, team=team, commit=False)
-    
-    try:
-        from backend.api.hackathons.service import update_participants_count
-        hackathon = await get_hack_by_id(session=session, hack_id=hackathon_id, update_count=False)
-        if hackathon:
-            await update_participants_count(session=session, hackathon=hackathon, commit=False)
-    except Exception:
-        pass
-    
-    await session.commit()
-    
-    return {"detail": "Team deleted successfully"}
+        await delete_team(session=session, team=team, commit=False)
+        
+        try:
+            from backend.api.hackathons.service import update_participants_count
+            hackathon = await get_hack_by_id(session=session, hack_id=hackathon_id, update_count=False)
+            if hackathon:
+                await update_participants_count(session=session, hackathon=hackathon, commit=False)
+        except Exception:
+            pass
+        
+        await session.commit()
+        
+        return {"detail": "Team deleted successfully"}
+    except Exception as e:
+        await session.rollback()
+        raise HTTPException(status_code=500, detail=f"Error deleting team: {str(e)}")
 
 
 #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
