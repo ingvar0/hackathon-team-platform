@@ -6,8 +6,12 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 60px 20px;
+    padding: 40px 20px;
     gap: 16px;
+    
+    @media (min-width: 768px) {
+      padding: 60px 20px;
+    }
   }
 
   &__spinner {
@@ -21,18 +25,31 @@
 
   &__header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 32px;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 16px;
+    margin-bottom: 24px;
+    
+    @media (min-width: 768px) {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+    }
   }
 
   &__title {
-    font-size: 48px;
+    font-size: 28px;
     font-weight: 600;
     margin: 0;
     color: #0f172a;
+    
+    @media (min-width: 768px) {
+      font-size: 40px;
+    }
+    
+    @media (min-width: 1024px) {
+      font-size: 48px;
+    }
   }
 
   &__markAllButton {
@@ -41,11 +58,18 @@
     border: none;
     border-radius: 20px;
     color: #0f172a;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
     font-family: 'Inter', sans-serif;
+    align-self: flex-start;
+    
+    @media (min-width: 768px) {
+      padding: 10px 20px;
+      font-size: 14px;
+      align-self: auto;
+    }
 
     &:hover:not(:disabled) {
       background-color: #B3B3B3;
@@ -62,7 +86,11 @@
   &__list {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
+    
+    @media (min-width: 768px) {
+      gap: 16px;
+    }
   }
 
   &__item {
@@ -71,9 +99,14 @@
 
   &__empty {
     text-align: center;
-    padding: 60px 20px;
+    padding: 40px 20px;
     color: #64748b;
-    font-size: 16px;
+    font-size: 14px;
+    
+    @media (min-width: 768px) {
+      padding: 60px 20px;
+      font-size: 16px;
+    }
   }
 }
 

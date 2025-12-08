@@ -14,9 +14,17 @@ async def admin_login(
     response: Response,
     session: AsyncSession = Depends(get_db),
 ):
-    admin = await get_admin(session=session, email=data.email)
+    # Normalize email: trim and convert to lowercase
+    normalized_email = data.email.strip().lower()
+    
+    admin = await get_admin(session=session, email=normalized_email)
 
-    if not admin or not verify_password(data.password, admin.password_hash):
+    if not admin:
+        print(f"Admin login failed: Admin with email '{normalized_email}' not found")
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+    
+    if not verify_password(data.password, admin.password_hash):
+        print(f"Admin login failed: Invalid password for email '{normalized_email}'")
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
     token = create_admin_access_token({"sub": str(admin.id)})

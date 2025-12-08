@@ -13,8 +13,8 @@ class Team(Base):
     title = Column(TEXT, nullable=False)
     description = Column(TEXT, nullable=False)
 
-    captain_id = Column(TEXT, nullable=False)  # Храним как строку
-    participants_id = Column(JSONB, nullable=True)  # Список строк
+    captain_id = Column(TEXT, nullable=False)
+    participants_id = Column(JSONB, nullable=True)
 
 
 

@@ -1,19 +1,21 @@
 // Конфигурация API
-// В режиме разработки используется прокси через Vite
-// В продакшене используйте полный URL бэкенда
-
 import axios from 'axios'
 
-// Определяем режим: в продакшене import.meta.env.PROD = true
-const isProduction = import.meta.env.PROD
+// Определяем базовый URL для API
+// ВСЕГДА используем относительный путь /api, который проксируется через nginx (production) или Vite (development)
+const getApiBaseUrl = () => {
+  // Если есть переменная окружения - используем её (можно задать через .env)
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL
+  }
+  
+  // ВСЕГДА используем относительный путь
+  // В development - проксируется через Vite на backend:8000
+  // В production - проксируется через nginx на http://89.169.160.161/api
+  return '/api'
+}
 
-// Базовый URL для API запросов
-// В разработке используем относительный путь (проксируется через Vite)
-// В продакшене используем относительный путь /api (проксируется через nginx на backend:8000)
-// Или можно использовать переменную окружения VITE_API_URL для кастомного URL
-export const API_BASE_URL = isProduction
-  ? (import.meta.env.VITE_API_URL || '/api') // В продакшене nginx проксирует /api на backend:8000
-  : '/api' // В разработке проксируется на http://backend:8000 через Vite
+export const API_BASE_URL = getApiBaseUrl()
 
 // Создаем общий экземпляр axios с базовыми настройками
 export const apiClient = axios.create({
@@ -21,26 +23,38 @@ export const apiClient = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  withCredentials: true, // Важно для работы с cookies (access_token, captain-access-token)
-  // Добавьте здесь общие interceptors, если нужно
-  // Например, для добавления токена авторизации
+  withCredentials: true, // Важно для работы с cookies
+  timeout: 30000, // Увеличиваем таймаут до 30 секунд для медленных соединений
 })
 
-// Interceptor для обработки ошибок (опционально)
+// Interceptor для обработки ошибок
 apiClient.interceptors.response.use(
   (response) => {
     console.log('API Response:', response.config.method?.toUpperCase(), response.config.url, response.status)
     return response
   },
   (error) => {
-    // Здесь можно добавить общую обработку ошибок
-    console.error('API Error:', {
+    // Детальное логирование для отладки
+    const errorInfo = {
       message: error.message,
+      code: error.code,
       status: error.response?.status,
       statusText: error.response?.statusText,
       url: error.config?.url,
       baseURL: error.config?.baseURL,
-    })
+      fullURL: error.config?.baseURL ? `${error.config.baseURL}${error.config.url}` : error.config?.url,
+      data: error.response?.data,
+    }
+    console.error('API Error:', errorInfo)
+    
+    // Если это network error, даем более понятное сообщение
+    if (error.code === 'ERR_NETWORK' || error.message === 'Network Error') {
+      console.error('Network Error - проверьте:')
+      console.error('1. Доступность сервера:', error.config?.baseURL)
+      console.error('2. CORS настройки на сервере')
+      console.error('3. Настройки прокси в nginx/vite')
+    }
+    
     return Promise.reject(error)
   }
 )
@@ -48,9 +62,14 @@ apiClient.interceptors.response.use(
 // Interceptor для логирования запросов
 apiClient.interceptors.request.use(
   (config) => {
-    const method = config.method?.toUpperCase() || 'UNKNOWN'
-    const url = (config.baseURL || '') + (config.url || '')
-    console.log('API Request:', method, url, config.data)
+    const fullURL = config.baseURL ? `${config.baseURL}${config.url}` : config.url
+    console.log('API Request:', {
+      method: config.method?.toUpperCase(),
+      url: fullURL,
+      baseURL: config.baseURL,
+      path: config.url,
+      data: config.data,
+    })
     return config
   },
   (error) => {

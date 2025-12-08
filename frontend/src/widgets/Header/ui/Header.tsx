@@ -8,7 +8,12 @@ import { AuthBlock } from '../../AuthBlock'
 import { useState } from 'react'
 import { useUser } from '../../../app/providers/UserProvider'
 
-export const Header = () => {
+type HeaderProps = {
+  onMenuToggle?: () => void
+  isMenuOpen?: boolean
+}
+
+export const Header = ({ onMenuToggle, isMenuOpen }: HeaderProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const { isAuthenticated, user, telegramId, logout } = useUser()
 
@@ -32,7 +37,30 @@ export const Header = () => {
   return (
     <>
       <header className={styles.header__wrapper}>
-        <NavLink to="/">
+        {/* Бургер-меню только для авторизованных на мобильных */}
+        {isAuthenticated && (
+          <button
+            className={styles.header__burger}
+            onClick={onMenuToggle}
+            aria-label="Меню"
+          >
+            <svg 
+              width="24" 
+              height="24" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              {isMenuOpen ? (
+                <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+              ) : (
+                <path d="M3 12H21M3 6H21M3 18H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+              )}
+            </svg>
+          </button>
+        )}
+
+        <NavLink to="/" className={styles.header__logoLink}>
           <img src={logo} alt="Fullstack Fusion" className={styles.header__logo} />
         </NavLink>
 
@@ -59,16 +87,16 @@ export const Header = () => {
                 className={styles.header__logoutButton}
                 title="Выйти"
               >
-                Выйти
+                <span className={styles.header__logoutText}>Выйти</span>
               </button>
             </>
           )}
 
           {!isAuthenticated && (
             <>
-            <MainButton onClick={openAuth} className={styles.header__loginButton}>
-              Войти
-            </MainButton>
+              <MainButton onClick={openAuth} className={styles.header__loginButton}>
+                Войти
+              </MainButton>
               <NavLink to="/hackatons/admin">
                 <button className={styles.header__adminButton} title="Вход для администратора">
                   Админ

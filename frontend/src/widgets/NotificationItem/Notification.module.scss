@@ -1,14 +1,21 @@
 .notification {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 20px;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
   border: 2px solid #e5e7eb;
   border-radius: 16px;
   margin-bottom: 0;
   background-color: #fff;
   transition: all 0.3s ease;
-  gap: 20px;
+  
+  @media (min-width: 768px) {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 20px;
+  }
 
   &:hover {
     border-color: #C8F133;
@@ -40,16 +47,26 @@
 
   &__title {
     margin: 0 0 8px 0;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
     color: #0f172a;
+    word-wrap: break-word;
+    
+    @media (min-width: 768px) {
+      font-size: 16px;
+    }
   }
 
   &__message {
     margin: 0 0 12px 0;
     color: #64748b;
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.5;
+    word-wrap: break-word;
+    
+    @media (min-width: 768px) {
+      font-size: 14px;
+    }
   }
 
   &__date {
@@ -61,7 +78,7 @@
     padding: 10px 20px;
     background-color: #C8F133;
     border: none;
-    border-radius: 20px;
+    border-radius: 16px;
     color: #0f172a;
     font-size: 13px;
     font-weight: 500;
@@ -70,6 +87,12 @@
     white-space: nowrap;
     font-family: 'Inter', sans-serif;
     flex-shrink: 0;
+    width: 100%;
+    
+    @media (min-width: 768px) {
+      width: auto;
+      border-radius: 20px;
+    }
 
     &:hover {
       background-color: #B3B3B3;

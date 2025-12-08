@@ -2,28 +2,83 @@ $main-button-color: #C8F133;
 $main-button-color-hover: #B3B3B3;
 $main-button-color-active: #999898;
 
+// Брейкпоинты
+$mobile: 480px;
+$tablet: 768px;
+$desktop: 1024px;
+
 :root {
   font-family: 'Inter', sans-serif;
 
   .container {
-    width: 1200px;
+    width: 100%;
+    max-width: 1200px;
     margin: 0 auto;
+    padding: 0 16px;
+    
+    @media (min-width: $tablet) {
+      padding: 0 24px;
+    }
+  }
+
+  h1 {
+    font-size: 32px;
+    
+    @media (min-width: $tablet) {
+      font-size: 42px;
+    }
+    
+    @media (min-width: $desktop) {
+      font-size: 56px;
+    }
   }
 
   h2 {
-    font-size: 64px;
+    font-size: 28px;
+    
+    @media (min-width: $tablet) {
+      font-size: 40px;
+    }
+    
+    @media (min-width: $desktop) {
+      font-size: 48px;
+    }
+    
+    @media (min-width: 1400px) {
+      font-size: 64px;
+    }
   }
 
   h3 {
-    font-size: 36px;
+    font-size: 20px;
+    
+    @media (min-width: $tablet) {
+      font-size: 28px;
+    }
+    
+    @media (min-width: $desktop) {
+      font-size: 36px;
+    }
   }
 
   h5 {
-    font-size: 24px;
+    font-size: 18px;
+    
+    @media (min-width: $tablet) {
+      font-size: 22px;
+    }
+    
+    @media (min-width: $desktop) {
+      font-size: 24px;
+    }
   }
 
   p {
     font-size: 14px;
+    
+    @media (min-width: $tablet) {
+      font-size: 15px;
+    }
   }
 }
 
@@ -31,6 +86,8 @@ $main-button-color-active: #999898;
   min-height: 100vh;
   width: 100%;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 
   &__layout {
     display: flex;
@@ -42,22 +99,52 @@ $main-button-color-active: #999898;
     flex: 1;
     min-width: 0;
     padding-top: calc(66px + 20px);
-    padding-right: 24px;
-    padding-left: calc(247px + 24px);
-    padding-bottom: 40px;
+    padding-right: 16px;
+    padding-left: 16px;
+    padding-bottom: 24px;
     overflow-x: hidden;
     max-width: 100%;
     box-sizing: border-box;
-    width: calc(100% - 247px);
+    width: 100%;
+    animation: fadeInContent 0.4s ease;
+    
+    @media (min-width: $tablet) {
+      padding-left: calc(247px + 24px);
+      padding-right: 24px;
+      padding-bottom: 40px;
+      width: calc(100% - 247px);
+    }
+  }
+}
+
+@keyframes fadeInContent {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
 .main-button {
-  padding: 12px 43px;
+  padding: 10px 20px;
   background-color: transparent;
   background-color: $main-button-color;
   border-radius: 38px;
   transition: 0.3s ease;
+  font-size: 14px;
+  white-space: nowrap;
+  
+  @media (min-width: $tablet) {
+    padding: 12px 32px;
+    font-size: 16px;
+  }
+  
+  @media (min-width: $desktop) {
+    padding: 12px 43px;
+  }
 
   &:hover {
     background-color: $main-button-color-hover;

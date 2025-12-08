@@ -1,8 +1,12 @@
 .teamDetail {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px 24px;
+  padding: 16px;
   animation: fadeIn 0.4s ease;
+  
+  @media (min-width: 768px) {
+    padding: 20px 24px;
+  }
 
   &__loading,
   &__error {
@@ -10,8 +14,12 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 60px 20px;
+    padding: 40px 20px;
     gap: 16px;
+    
+    @media (min-width: 768px) {
+      padding: 60px 20px;
+    }
   }
 
   &__spinner {
@@ -26,17 +34,24 @@
   &__backButton {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
+    gap: 6px;
+    padding: 8px 14px;
     background-color: transparent;
     border: 1px solid #e2e8f0;
     border-radius: 12px;
     color: #0f172a;
-    font-size: 14px;
+    font-size: 13px;
     cursor: pointer;
     transition: all 0.2s ease;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
     font-family: 'Inter', sans-serif;
+    
+    @media (min-width: 768px) {
+      gap: 8px;
+      padding: 8px 16px;
+      margin-bottom: 24px;
+      font-size: 14px;
+    }
 
     &:hover {
       background-color: #f1f5f9;
@@ -45,41 +60,104 @@
   }
 
   &__backIcon {
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
     transform: rotate(180deg);
+    
+    @media (min-width: 768px) {
+      width: 16px;
+      height: 16px;
+    }
   }
 
   &__header {
-    margin-bottom: 32px;
+    margin-bottom: 24px;
+    
+    @media (min-width: 768px) {
+      margin-bottom: 32px;
+    }
   }
 
   &__headerTop {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 24px;
+    flex-direction: column;
+    gap: 16px;
+    
+    @media (min-width: 768px) {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+    }
   }
 
   &__headerMain {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
     flex: 1;
+    
+    @media (min-width: 768px) {
+      gap: 16px;
+    }
   }
 
   &__title {
-    font-size: 48px;
+    font-size: 28px;
     font-weight: 600;
     color: #0f172a;
     margin: 0;
+    line-height: 1.2;
+    word-wrap: break-word;
+    
+    @media (min-width: 768px) {
+      font-size: 40px;
+    }
+    
+    @media (min-width: 1024px) {
+      font-size: 48px;
+    }
+  }
+
+  &__titleInput {
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    font-size: 28px;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    color: #0f172a;
+    background-color: #fff;
+    width: 100%;
+    
+    @media (min-width: 768px) {
+      padding: 12px 16px;
+      font-size: 40px;
+    }
+    
+    @media (min-width: 1024px) {
+      font-size: 48px;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: #C8F133;
+    }
   }
 
   &__hackathon {
     display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    font-size: 14px;
+    
+    @media (min-width: 768px) {
+      flex-direction: row;
+      align-items: center;
+      gap: 8px;
+      font-size: 16px;
+    }
   }
 
   &__hackathonLabel {
@@ -91,6 +169,7 @@
     color: #0f172a;
     font-weight: 600;
     transition: color 0.2s ease;
+    word-wrap: break-word;
 
     &:hover {
       color: #C8F133;
@@ -100,37 +179,81 @@
   &__descriptionContainer {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 8px;
+    
+    @media (min-width: 768px) {
+      gap: 12px;
+    }
   }
 
   &__description {
-    font-size: 18px;
+    font-size: 14px;
     line-height: 1.6;
     color: #334155;
     margin: 0;
     white-space: pre-wrap;
+    word-wrap: break-word;
+    
+    @media (min-width: 768px) {
+      font-size: 16px;
+    }
+    
+    @media (min-width: 1024px) {
+      font-size: 18px;
+    }
+  }
+
+  &__descriptionTextarea {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    resize: vertical;
+    min-height: 80px;
+    width: 100%;
+    
+    @media (min-width: 768px) {
+      padding: 12px;
+      font-size: 16px;
+      min-height: 100px;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: #C8F133;
+    }
   }
 
   &__descriptionEmpty {
-    font-size: 16px;
+    font-size: 14px;
     color: #94a3b8;
     font-style: italic;
     margin: 0;
+    
+    @media (min-width: 768px) {
+      font-size: 16px;
+    }
   }
 
   &__editButton {
-    padding: 12px 24px;
+    padding: 10px 20px;
     border-radius: 12px;
     border: 1px solid #e2e8f0;
     background-color: #fff;
     color: #0f172a;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
     font-family: 'Inter', sans-serif;
     white-space: nowrap;
     align-self: flex-start;
+    
+    @media (min-width: 768px) {
+      padding: 12px 24px;
+      font-size: 14px;
+    }
 
     &:hover {
       background-color: #C8F133;
@@ -138,42 +261,16 @@
     }
   }
 
-  &__titleInput {
-    padding: 12px 16px;
-    border-radius: 8px;
-    border: 1px solid #e2e8f0;
-    font-size: 48px;
-    font-weight: 600;
-    font-family: 'Inter', sans-serif;
-    color: #0f172a;
-    background-color: #fff;
-    width: 100%;
-
-    &:focus {
-      outline: none;
-      border-color: #C8F133;
-    }
-  }
-
-  &__descriptionTextarea {
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid #e2e8f0;
-    font-size: 16px;
-    font-family: 'Inter', sans-serif;
-    resize: vertical;
-    min-height: 100px;
-
-    &:focus {
-      outline: none;
-      border-color: #C8F133;
-    }
-  }
-
   &__editActions {
     display: flex;
-    gap: 12px;
+    flex-direction: column;
+    gap: 8px;
     margin-top: 8px;
+    
+    @media (min-width: 768px) {
+      flex-direction: row;
+      gap: 12px;
+    }
   }
 
   &__saveButton {
@@ -182,11 +279,17 @@
     border: none;
     background-color: #C8F133;
     color: #0f172a;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
     font-family: 'Inter', sans-serif;
+    width: 100%;
+    
+    @media (min-width: 768px) {
+      width: auto;
+      font-size: 14px;
+    }
 
     &:hover:not(:disabled) {
       background-color: #b4d628;
@@ -204,11 +307,17 @@
     border: 1px solid #e2e8f0;
     background-color: #fff;
     color: #0f172a;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
     font-family: 'Inter', sans-serif;
+    width: 100%;
+    
+    @media (min-width: 768px) {
+      width: auto;
+      font-size: 14px;
+    }
 
     &:hover:not(:disabled) {
       background-color: #f1f5f9;
@@ -222,54 +331,101 @@
 
   &__info {
     background-color: #F5F5F5;
-    border-radius: 20px;
-    padding: 24px;
-    margin-bottom: 32px;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 24px;
+    
+    @media (min-width: 768px) {
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 32px;
+    }
   }
 
   &__infoItem {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    gap: 4px;
+    
+    @media (min-width: 768px) {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0;
+    }
   }
 
   &__infoLabel {
-    font-size: 16px;
+    font-size: 14px;
     color: #64748b;
     font-weight: 500;
+    
+    @media (min-width: 768px) {
+      font-size: 16px;
+    }
   }
 
   &__infoValue {
-    font-size: 18px;
+    font-size: 16px;
     color: #0f172a;
     font-weight: 600;
+    
+    @media (min-width: 768px) {
+      font-size: 18px;
+    }
   }
 
   &__members {
-    margin-bottom: 32px;
+    margin-bottom: 24px;
+    
+    @media (min-width: 768px) {
+      margin-bottom: 32px;
+    }
   }
 
   &__membersTitle {
-    font-size: 32px;
+    font-size: 24px;
     font-weight: 600;
     color: #0f172a;
-    margin: 0 0 24px 0;
+    margin: 0 0 20px 0;
+    
+    @media (min-width: 768px) {
+      font-size: 28px;
+      margin: 0 0 24px 0;
+    }
+    
+    @media (min-width: 1024px) {
+      font-size: 32px;
+    }
   }
 
   &__membersGrid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 24px;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    
+    @media (min-width: 480px) {
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+    
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
   }
 
   &__memberCard {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    padding: 16px;
+    padding: 12px;
     border-radius: 12px;
     border: 2px solid transparent;
     transition: all 0.2s ease;
+    
+    @media (min-width: 768px) {
+      padding: 16px;
+    }
 
     &_captain {
       background-color: #fefce8;
@@ -280,27 +436,39 @@
 
   &__captainBadge {
     display: inline-block;
-    padding: 4px 12px;
+    padding: 4px 10px;
     border-radius: 12px;
     background-color: #C8F133;
     color: #0f172a;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     align-self: flex-start;
+    
+    @media (min-width: 768px) {
+      padding: 4px 12px;
+      font-size: 12px;
+    }
   }
 
   &__removeMember {
-    padding: 8px 16px;
+    padding: 8px 14px;
     border-radius: 12px;
     border: 1px solid #ef4444;
     background-color: #fff;
     color: #ef4444;
-    font-size: 14px;
+    font-size: 13px;
     cursor: pointer;
     transition: all 0.2s ease;
     font-family: 'Inter', sans-serif;
+    width: 100%;
+    
+    @media (min-width: 768px) {
+      width: auto;
+      font-size: 14px;
+      padding: 8px 16px;
+    }
 
     &:hover {
       background-color: #fee2e2;
@@ -309,19 +477,31 @@
 
   &__empty {
     text-align: center;
-    padding: 60px 20px;
+    padding: 40px 20px;
     color: #64748b;
-    font-size: 16px;
+    font-size: 14px;
+    
+    @media (min-width: 768px) {
+      padding: 60px 20px;
+      font-size: 16px;
+    }
   }
 
   &__actions {
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    gap: 16px;
-    padding: 24px;
+    gap: 12px;
+    padding: 16px;
     background-color: #F5F5F5;
-    border-radius: 20px;
-    flex-wrap: wrap;
+    border-radius: 16px;
+    
+    @media (min-width: 768px) {
+      flex-direction: row;
+      gap: 16px;
+      padding: 24px;
+      border-radius: 20px;
+    }
   }
 
   &__deleteButton {
@@ -330,11 +510,17 @@
     border: 1px solid #dc2626;
     background-color: #fff;
     color: #dc2626;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
     font-family: 'Inter', sans-serif;
+    width: 100%;
+    
+    @media (min-width: 768px) {
+      width: auto;
+      font-size: 16px;
+    }
 
     &:hover:not(:disabled) {
       background-color: #fee2e2;
@@ -353,11 +539,17 @@
     border: 1px solid #ef4444;
     background-color: #fff;
     color: #ef4444;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
     font-family: 'Inter', sans-serif;
+    width: 100%;
+    
+    @media (min-width: 768px) {
+      width: auto;
+      font-size: 16px;
+    }
 
     &:hover:not(:disabled) {
       background-color: #fee2e2;

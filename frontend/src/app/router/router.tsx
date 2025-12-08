@@ -13,9 +13,11 @@ import { Sidebar } from '../../widgets/Sidebar'
 import { NotFoundPage } from '../../pages/NotFoundPage/NotFoundPage'
 import { AdminPanel } from '../../pages/AdminPanel'
 import { useUser } from '../providers/UserProvider'
+import { useState } from 'react'
 
 function AppRouter() {
   const { isAuthenticated, isLoading } = useUser()
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   // Показываем загрузку пока проверяется аутентификация
   if (isLoading) {
@@ -54,13 +56,23 @@ function AppRouter() {
     )
   }
 
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen)
+  }
+
   return (
     <BrowserRouter>
       <div className="app">
-        <Header />
+        <Header 
+          onMenuToggle={toggleMenu} 
+          isMenuOpen={isMenuOpen}
+        />
         {isAuthenticated && (
           <div className="app__layout">
-            <Sidebar />
+            <Sidebar 
+              isOpen={isMenuOpen}
+              onClose={() => setIsMenuOpen(false)}
+            />
             <main className="app__content">
               <Routes>
                 <Route path="/" element={<Home />} />

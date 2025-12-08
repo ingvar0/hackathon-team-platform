@@ -29,7 +29,6 @@ export const AdminPanel = () => {
     checkAuth()
   }, [checkAuth])
 
-
   const handleLogout = async () => {
     try {
       await logout()
@@ -82,7 +81,7 @@ export const AdminPanel = () => {
       <div className={styles.adminPanel}>
         <div className={styles.adminPanel__login}>
           <AdminLoginForm closeAuth={() => {
-            // После успешного входа форма закроется автоматически
+            // setShowLogin(false) // This line was removed as per the edit hint
           }} />
         </div>
       </div>

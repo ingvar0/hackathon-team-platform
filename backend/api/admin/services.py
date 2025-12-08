@@ -3,7 +3,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
 async def get_admin(session: AsyncSession, email: str) -> Admin:
-    result = await session.execute(select(Admin).where(Admin.email == email))
+    # Normalize email for lookup
+    normalized_email = email.strip().lower()
+    result = await session.execute(select(Admin).where(Admin.email == normalized_email))
     admin = result.scalars().first()
 
     return admin
