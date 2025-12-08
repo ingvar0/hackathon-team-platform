@@ -1,15 +1,24 @@
 .adminPanel {
   min-height: calc(100vh - 66px);
-  padding: 40px;
+  padding: 20px 16px;
   background-color: #f8fafc;
+  
+  @media (min-width: 768px) {
+    padding: 40px;
+  }
 
   &__loading {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 400px;
-    font-size: 18px;
+    min-height: 300px;
+    font-size: 16px;
     color: #64748b;
+    
+    @media (min-width: 768px) {
+      min-height: 400px;
+      font-size: 18px;
+    }
   }
 
   &__login {
@@ -17,6 +26,7 @@
     justify-content: center;
     align-items: center;
     min-height: calc(100vh - 66px);
+    padding: 20px;
   }
 
   &__content {
@@ -26,16 +36,28 @@
 
   &__header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 40px;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 24px;
+    
+    @media (min-width: 768px) {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 40px;
+    }
   }
 
   &__title {
-    font-size: 36px;
+    font-size: 28px;
     font-weight: 600;
     color: #0f172a;
     margin: 0;
+    
+    @media (min-width: 768px) {
+      font-size: 36px;
+    }
   }
 
   &__logoutButton {
@@ -44,11 +66,17 @@
     border: 2px solid #e5e7eb;
     border-radius: 12px;
     color: #64748b;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
     font-family: 'Inter', sans-serif;
+    align-self: flex-start;
+    
+    @media (min-width: 768px) {
+      font-size: 14px;
+      align-self: auto;
+    }
 
     &:hover {
       background-color: #f8fafc;
@@ -63,36 +91,58 @@
 
   &__section {
     background: #fff;
-    border-radius: 20px;
-    padding: 32px;
+    border-radius: 16px;
+    padding: 20px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    margin-bottom: 32px;
+    margin-bottom: 24px;
+    
+    @media (min-width: 768px) {
+      border-radius: 20px;
+      padding: 32px;
+      margin-bottom: 32px;
+    }
   }
 
   &__sectionTitle {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 600;
     color: #0f172a;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
+    
+    @media (min-width: 768px) {
+      font-size: 24px;
+      margin-bottom: 24px;
+    }
   }
 
   &__actions {
-    margin-bottom: 24px;
+    margin-bottom: 20px;
     display: flex;
     justify-content: flex-end;
+    
+    @media (min-width: 768px) {
+      margin-bottom: 24px;
+    }
   }
 
   &__createButton {
-    padding: 12px 24px;
+    padding: 10px 20px;
     background-color: #C8F133;
     border: none;
     border-radius: 12px;
     color: #0f172a;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
     font-family: 'Inter', sans-serif;
+    width: 100%;
+    
+    @media (min-width: 768px) {
+      width: auto;
+      padding: 12px 24px;
+      font-size: 14px;
+    }
 
     &:hover {
       background-color: #B3B3B3;
@@ -108,19 +158,30 @@
   &__hackathonsList {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
+    
+    @media (min-width: 768px) {
+      gap: 16px;
+    }
   }
 
   &__hackathonItem {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
     background-color: #f8fafc;
     border-radius: 12px;
     border: 1px solid #e5e7eb;
     transition: all 0.2s ease;
-    gap: 20px;
+    
+    @media (min-width: 768px) {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      gap: 20px;
+    }
 
     &:hover {
       border-color: #cbd5e1;
@@ -129,43 +190,73 @@
   }
 
   &__hackathonImage {
-    width: 120px;
-    height: 120px;
+    width: 100%;
+    height: 200px;
     object-fit: cover;
     border-radius: 8px;
     flex-shrink: 0;
+    
+    @media (min-width: 768px) {
+      width: 120px;
+      height: 120px;
+    }
   }
 
   &__hackathonInfo {
     flex: 1;
+    min-width: 0;
   }
 
   &__hackathonTitle {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     color: #0f172a;
     margin: 0 0 8px 0;
+    word-wrap: break-word;
+    
+    @media (min-width: 768px) {
+      font-size: 18px;
+    }
   }
 
   &__hackathonDescription {
-    font-size: 14px;
+    font-size: 13px;
     color: #64748b;
     margin: 0 0 12px 0;
     line-height: 1.5;
+    word-wrap: break-word;
+    
+    @media (min-width: 768px) {
+      font-size: 14px;
+    }
   }
 
   &__hackathonMeta {
     display: flex;
-    gap: 16px;
-    font-size: 12px;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 11px;
     color: #94a3b8;
+    
+    @media (min-width: 768px) {
+      gap: 16px;
+      font-size: 12px;
+    }
   }
 
   &__hackathonActions {
     display: flex;
-    gap: 12px;
-    margin-left: 24px;
-    flex-shrink: 0;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    
+    @media (min-width: 768px) {
+      flex-direction: row;
+      gap: 12px;
+      margin-left: 24px;
+      flex-shrink: 0;
+      width: auto;
+    }
   }
 
   &__editButton,
@@ -173,11 +264,17 @@
     padding: 8px 16px;
     border: none;
     border-radius: 8px;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
     font-family: 'Inter', sans-serif;
+    width: 100%;
+    
+    @media (min-width: 768px) {
+      width: auto;
+      font-size: 14px;
+    }
 
     &:disabled {
       opacity: 0.6;
@@ -205,8 +302,13 @@
 
   &__empty {
     text-align: center;
-    padding: 40px;
+    padding: 40px 20px;
     color: #94a3b8;
-    font-size: 16px;
+    font-size: 14px;
+    
+    @media (min-width: 768px) {
+      padding: 40px;
+      font-size: 16px;
+    }
   }
 }

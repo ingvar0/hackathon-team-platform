@@ -4,6 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { participantService } from '../../entities/Participant'
 import { ProfileEditForm } from '../../features/ProfileEdit/ProfileEditForm'
 import { useUser } from '../../app/providers/UserProvider'
+import type { AxiosError } from 'axios'
 import styles from './ParticipantDetail.module.scss'
 import arrowIcon from '../../shared/assets/icons/arrow.svg'
 
@@ -22,7 +23,6 @@ export const ParticipantDetail = () => {
   // Проверяем, является ли текущий пользователь владельцем профиля
   const isOwner = isAuthenticated && (id === telegramId || id === String(telegramId))
 
-
   if (isLoading) {
     return (
       <div className={styles.participantDetail__loading}>
@@ -33,7 +33,9 @@ export const ParticipantDetail = () => {
   }
 
   if (error || !participant) {
-    const errorMessage = error?.response?.status === 404 
+    // Исправляем типизацию ошибки
+    const axiosError = error as AxiosError | undefined
+    const errorMessage = axiosError?.response?.status === 404 
       ? 'Участник не найден. Возможно, вы еще не зарегистрированы в системе. Пожалуйста, зарегистрируйтесь через Telegram бота.'
       : 'Ошибка загрузки данных участника'
     

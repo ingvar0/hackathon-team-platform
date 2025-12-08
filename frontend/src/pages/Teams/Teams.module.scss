@@ -6,8 +6,12 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 60px 20px;
+    padding: 40px 20px;
     gap: 16px;
+    
+    @media (min-width: 768px) {
+      padding: 60px 20px;
+    }
   }
 
   &__spinner {
@@ -20,43 +24,88 @@
   }
 
   &__title {
-    font-size: 48px;
+    font-size: 28px;
     font-weight: 600;
-    margin: 0 0 32px 0;
+    margin: 0 0 24px 0;
     color: #0f172a;
+    
+    @media (min-width: 768px) {
+      font-size: 40px;
+      margin: 0 0 32px 0;
+    }
+    
+    @media (min-width: 1024px) {
+      font-size: 48px;
+    }
   }
 
   &__section {
-    border-radius: 26px;
+    border-radius: 16px;
     background-color: #F5F5F5;
-    padding: 30px 24px 40px;
+    padding: 16px;
     display: flex;
     justify-content: center;
+    
+    @media (min-width: 768px) {
+      border-radius: 26px;
+      padding: 24px;
+    }
+    
+    @media (min-width: 1024px) {
+      padding: 30px 24px 40px;
+    }
   }
 
   &__list {
     max-width: 1200px;
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 24px;
+    grid-template-columns: 1fr;
+    gap: 16px;
     justify-items: center;
+    
+    @media (min-width: 480px) {
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+    }
   }
 
   &__cardWrapper {
-    animation: fadeInUp 0.4s ease both;
+    animation: fadeInUp 0.5s ease backwards;
     width: 100%;
-    max-width: 400px;
+    max-width: 100%;
+    
+    @media (min-width: 480px) {
+      max-width: 400px;
+    }
+    
+    // Последовательное появление карточек
+    @for $i from 1 through 20 {
+      &:nth-child(#{$i}) {
+        animation-delay: #{$i * 0.1}s;
+      }
+    }
   }
 
   &__empty {
     text-align: center;
-    padding: 60px 20px;
+    padding: 40px 20px;
     color: #64748b;
-    font-size: 16px;
+    font-size: 14px;
     background: #fff;
-    border-radius: 20px;
+    border-radius: 16px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    
+    @media (min-width: 768px) {
+      padding: 60px 20px;
+      font-size: 16px;
+      border-radius: 20px;
+    }
   }
 }
 

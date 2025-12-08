@@ -12,13 +12,14 @@ import arrowIcon from '../../shared/assets/icons/arrow.svg'
 export const TeamDetail = () => {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
-  const { user } = useUser()
+  const { user, telegramId } = useUser() // Добавляем telegramId
   const queryClient = useQueryClient()
   const [isEditing, setIsEditing] = useState(false)
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
 
-  const { data: team, isLoading, error } = useQuery({
+  // Убираем неиспользуемую переменную error
+  const { data: team, isLoading } = useQuery({
     queryKey: ['team', id],
     queryFn: () => {
       console.log('TeamDetail: Loading team with id:', id)
@@ -146,8 +147,14 @@ export const TeamDetail = () => {
 
   // Объединяем капитана и участников
   const allMembers = [team.captain, ...team.participants]
-  const isCaptain = team.captain.tgTag === user?.tgTag || team.captain.id === user?.id
-  const isMember = allMembers.some(m => m.tgTag === user?.tgTag || m.id === user?.id)
+  // Исправляем проверку: используем telegramId вместо tgTag, так как User не имеет tgTag
+  // Сравниваем по id или telegram_id (который в Participant может быть в tgTag)
+  const isCaptain = team.captain.id === user?.id || 
+                    (telegramId && (team.captain.tgTag === telegramId || String(team.captain.id) === telegramId))
+  const isMember = allMembers.some(m => 
+    m.id === user?.id || 
+    (telegramId && (m.tgTag === telegramId || String(m.id) === telegramId))
+  )
   const canLeave = isMember && !isCaptain && allMembers.length > 1
 
   return (
