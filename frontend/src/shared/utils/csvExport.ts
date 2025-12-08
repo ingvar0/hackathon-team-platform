@@ -70,6 +70,9 @@ export function exportTeamsToCSV(teams: TeamData[], hackathonTitle: string = 'Х
   // Создаем строки CSV
   const rows: string[] = []
   
+  // Добавляем название хакатона как первую строку (комментарий)
+  rows.push(`# Хакатон: ${escapeCSVValue(hackathonTitle)}`)
+  
   // Добавляем заголовки
   rows.push(headers.map(escapeCSVValue).join(','))
   

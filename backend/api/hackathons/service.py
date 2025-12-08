@@ -166,6 +166,5 @@ async def delete_hack(session: AsyncSession, hack: Hackathon) -> None:
     
     await session.delete(hack)
     await session.commit()
-    session.expunge(hack)
 
 
