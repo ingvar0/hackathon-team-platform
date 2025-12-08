@@ -22,10 +22,12 @@ async def main():
         sys.exit(1)
     
     email = email.encode('utf-8', errors='ignore').decode('utf-8')
+    # Normalize email: trim and convert to lowercase
+    normalized_email = email.strip().lower()
     hashed_password = hash_password(password)
     
     async with async_session() as session:
-        await create_admin(session=session, email=email, password_hash=hashed_password)
+        await create_admin(session=session, email=normalized_email, password_hash=hashed_password)
 
 if __name__ == "__main__":
     asyncio.run(main())

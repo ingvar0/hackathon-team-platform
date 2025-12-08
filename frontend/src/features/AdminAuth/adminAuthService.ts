@@ -18,7 +18,7 @@ export const adminAuthService = {
     console.log('adminAuthService.login: Отправка запроса на /admin/login')
     try {
       const response = await apiClient.post<AdminLoginResponse>('/admin/login', {
-        email: email.trim(),
+        email: email.trim().toLowerCase(),
         password: password,
       })
       console.log('adminAuthService.login: Успешный ответ:', response.data)

@@ -2,6 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from backend.api.depends import get_current_admin
 
+from backend.api.teams.schemas import TeamInfo
+from backend.api.teams.service import get_teams_by_hackathon
+from backend.api.teams.utils import build_team_info
 from backend.api.hackathons.utils import get_pic_base64
 from backend.api.admin.models import Admin
 from backend.api.database import get_db
@@ -39,9 +42,7 @@ async def all_hacks_info(
                         max_participants=getattr(hack, 'max_participants', None)
                     ))
                 except Exception as e:
-                    # Если не удалось обработать один хакатон, пропускаем его
                     continue
-        
         return result
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error fetching hackathons: {str(e)}")
@@ -52,10 +53,8 @@ async def hack_info(
     session: AsyncSession = Depends(get_db),
 ) -> HackInfo:
     hack = await get_hack_by_id(session=session, hack_id=hack_id)
-
     if not hack:
         raise HTTPException(status_code=404, detail="Hack not found")
-
     return HackInfo(
         hack_id=hack.hack_id,
         title=hack.title or "",
@@ -82,7 +81,6 @@ async def update_hack_info(
     hack = await get_hack_by_id(session=session, hack_id=hack_id)
     if not hack:
         raise HTTPException(status_code=404, detail="Hack not found or already deleted")
-
     hack = await update_hack(
         session=session,
         hack=hack,
@@ -95,7 +93,6 @@ async def update_hack_info(
         location=data.location,
         max_participants=data.max_participants,
     )
-
     return HackInfo(
         hack_id=hack.hack_id,
         title=hack.title or "",
@@ -108,6 +105,7 @@ async def update_hack_info(
         participants_count=hack.participants_count or 0,
         max_participants=getattr(hack, 'max_participants', None)
     )
+
 
 
 @router.post("/{hack_id}/delete_hack")
@@ -124,7 +122,6 @@ async def delete_hack_info(
     await delete_hack(session=session, hack=hack)
 
     return {"message": "Успешно удалено"}
-
 
 
 @router.post("/create_hack", response_model=HackInfo)
@@ -185,6 +182,37 @@ async def create_hack_endpoint(
         raise HTTPException(status_code=500, detail=f"Error creating hack: {str(e)}")
 
 
+@router.post("/{hack_id}/statistics", response_model=list[TeamInfo])
+async def get_hack_statistics(
+    hack_id: int,
+    session: AsyncSession = Depends(get_db),
+    admin: Admin = Depends(get_current_admin)
+) -> list[TeamInfo]:
+    """Получить список всех команд, участвующих в хакатоне (для экспорта в CSV)"""
+    # Проверяем существование хакатона
+    hack = await get_hack_by_id(session=session, hack_id=hack_id)
+    if not hack:
+        raise HTTPException(status_code=404, detail="Hack not found")
+    
+    # Получаем все команды для этого хакатона
+    teams = await get_teams_by_hackathon(session=session, hackathon_id=hack_id)
+    
+    # Формируем полную информацию о каждой команде
+    teams_info = []
+    for team in teams:
+        if team:
+            try:
+                team_info = await build_team_info(
+                    session=session,
+                    team=team,
+                    include_password=False
+                )
+                teams_info.append(team_info)
+            except Exception as e:
+                # Пропускаем команды с ошибками (например, если капитан не найден)
+                continue
+    
+    return teams_info
 #-----------------------------------------------------------------------------------------------------------------------------------------
 
 

@@ -85,7 +85,6 @@ async def get_invitations_by_team(session: AsyncSession, team_id: int) -> list[T
 
 
 async def cancel_invitations_for_team(session: AsyncSession, team_id: int, commit: bool = True) -> None:
-    """Отменить все pending приглашения для команды"""
     result = await session.execute(
         select(TeamInvitation).where(
             and_(

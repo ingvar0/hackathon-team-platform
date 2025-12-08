@@ -265,5 +265,14 @@ export const hackathonService = {
     
     await apiClient.post(`/hackathons/${id}/participate`)
   },
+  async getStatistics(hackathonId: number): Promise<any[]> {
+    try {
+      const response = await apiClient.post<any[]>(`/hackathons/${hackathonId}/statistics`)
+      return response.data
+    } catch (error) {
+      console.error('Ошибка загрузки статистики:', error)
+      throw error
+    }
+  },
 }
 

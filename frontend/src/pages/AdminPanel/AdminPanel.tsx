@@ -5,12 +5,14 @@ import { AdminLoginForm } from '../../features/AdminAuth'
 import { useAdmin } from '../../app/providers/AdminProvider'
 import { hackathonService } from '../../entities/Hackathon'
 import type { Hackathon } from '../../entities/Hackathon'
+import { exportTeamsToCSV, downloadCSV } from '../../shared/utils/csvExport'
 import styles from './AdminPanel.module.scss'
 
 export const AdminPanel = () => {
   const { isAuthenticated, isLoading, logout, checkAuth } = useAdmin()
   const [showCreateForm, setShowCreateForm] = useState(false)
   const [editingHackathon, setEditingHackathon] = useState<Hackathon | null>(null)
+  const [exportingHackathonId, setExportingHackathonId] = useState<number | null>(null)
   const queryClient = useQueryClient()
 
   const { data: hackathons, isLoading: isLoadingHackathons } = useQuery({
@@ -66,6 +68,33 @@ export const AdminPanel = () => {
   const handleCancel = () => {
     setShowCreateForm(false)
     setEditingHackathon(null)
+  }
+
+  const handleExportCSV = async (hackathon: Hackathon) => {
+    setExportingHackathonId(hackathon.id)
+    try {
+      // Получаем статистику команд
+      const teams = await hackathonService.getStatistics(hackathon.id)
+      
+      if (!teams || teams.length === 0) {
+        alert('Нет команд для экспорта')
+        return
+      }
+      
+      // Преобразуем в CSV
+      const csvContent = exportTeamsToCSV(teams, hackathon.title)
+      
+      // Формируем имя файла
+      const filename = `${hackathon.title.replace(/[^a-zа-яё0-9]/gi, '_')}_команды_${new Date().toISOString().split('T')[0]}.csv`
+      
+      // Скачиваем файл
+      downloadCSV(csvContent, filename)
+    } catch (error) {
+      console.error('Ошибка при экспорте CSV:', error)
+      alert('Ошибка при экспорте данных. Попробуйте еще раз.')
+    } finally {
+      setExportingHackathonId(null)
+    }
   }
 
   if (isLoading) {
@@ -162,6 +191,14 @@ export const AdminPanel = () => {
                     </div>
                   </div>
                   <div className={styles.adminPanel__hackathonActions}>
+                    <button
+                      onClick={() => handleExportCSV(hackathon)}
+                      className={styles.adminPanel__exportButton}
+                      title="Экспортировать команды в CSV"
+                      disabled={exportingHackathonId === hackathon.id || !!editingHackathon}
+                    >
+                      {exportingHackathonId === hackathon.id ? 'Экспорт...' : '📥 Экспорт CSV'}
+                    </button>
                     <button
                       onClick={() => handleEdit(hackathon)}
                       className={styles.adminPanel__editButton}
