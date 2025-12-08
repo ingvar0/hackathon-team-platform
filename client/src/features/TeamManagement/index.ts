@@ -1,2 +1,0 @@
-export { InviteMember } from './InviteMember'
-

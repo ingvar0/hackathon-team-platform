@@ -1,3 +1,0 @@
-export { ParticipantDetail } from './ParticipantDetail'
-
-

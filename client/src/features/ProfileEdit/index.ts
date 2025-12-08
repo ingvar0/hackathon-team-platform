@@ -1,2 +1,0 @@
-export { ProfileEditForm } from './ProfileEditForm'
-

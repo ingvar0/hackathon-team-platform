@@ -1,2 +1,0 @@
-export { TeamDetail } from './TeamDetail'
-

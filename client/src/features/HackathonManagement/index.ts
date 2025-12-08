@@ -1,2 +1,0 @@
-export { CreateHackathon } from './CreateHackathon'
-
